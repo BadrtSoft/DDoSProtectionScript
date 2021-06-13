@@ -8,9 +8,9 @@
 
 #i have added various types of blocking, checking, & logging. Hope you like it, if not well then....uhhh well everyone is entitled to there opinion. 
 
-# IG: @imdoxed 
-# OGU: obstacles
-# Twitter: @ItsObstacles
+# IG: @ess_badrsoft
+# OGU: BadrSoft
+# Twitter: @ess_badrsoft
 
 iptables -t mangle -A PREROUTING -m conntrack --ctstate INVALID -j DROP
 iptables -A INPUT -m state --state INVALID -j DROP
@@ -156,6 +156,24 @@ iptables -A INPUT -s 113.62.0.0/15 -j DROP
 iptables -A INPUT -s 113.64.0.0/11 -j DROP	
 iptables -A INPUT -s 113.96.0.0/12 -j DROP	
 iptables -A INPUT -s 114.104.0.0/14 -j DROP
+sleep 2 #sleep statement
+# Reject spoofed packets
+iptables -A INPUT -s 10.0.0.0/8 -j DROP
+iptables -A INPUT -s 169.254.0.0/16 -j DROP
+iptables -A INPUT -s 172.16.0.0/12 -j DROP
+iptables -A INPUT -i eth0 -s 127.0.0.0/8 -j DROP
+iptables -A INPUT -s 224.0.0.0/4 -j DROP
+iptables -A INPUT -d 224.0.0.0/4 -j DROP
+iptables -A INPUT -s 240.0.0.0/5 -j DROP
+iptables -A INPUT -d 240.0.0.0/5 -j DROP
+iptables -A INPUT -s 0.0.0.0/8 -j DROP
+iptables -A INPUT -d 0.0.0.0/8 -j DROP
+iptables -A INPUT -d 239.255.255.0/24 -j DROP
+iptables -A INPUT -d 255.255.255.255 -j DROP
+# Stop smurf attacks
+iptables -A INPUT -p icmp -m icmp --icmp-type address-mask-request -j DROP
+iptables -A INPUT -p icmp -m icmp --icmp-type timestamp-request -j DROP
+iptables -A INPUT -p icmp -m icmp -j DROP
 sleep 2 #sleep statement
 iptables -A INPUT -p tcp --tcp-flags ALL ALL -j DROP 
 iptables -A INPIT -p tcp --tcp-flags ALL NONE -j DROP 
